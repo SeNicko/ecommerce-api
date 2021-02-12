@@ -12,7 +12,7 @@ export class ProductController {
 				data: products,
 			});
 		} catch (err) {
-			next(new HttpError());
+			next(err);
 		}
 	}
 
@@ -32,7 +32,7 @@ export class ProductController {
 
 			res.status(StatusCodes.OK).json({ ...product });
 		} catch (err) {
-			next(new HttpError());
+			next(err);
 		}
 	}
 
@@ -43,7 +43,7 @@ export class ProductController {
 				...product,
 			});
 		} catch (err) {
-			next(new HttpError());
+			next(err);
 		}
 	}
 
@@ -56,7 +56,7 @@ export class ProductController {
 				...updatedProduct,
 			});
 		} catch (err) {
-			next(new HttpError());
+			next(err);
 		}
 	}
 
@@ -69,7 +69,45 @@ export class ProductController {
 				message: 'Product succesfully deleted',
 			});
 		} catch (err) {
-			next(new HttpError());
+			next(err);
+		}
+	}
+
+	static async addImage(req: Request, _res: Response, next: NextFunction) {
+		// const { id } = req.params;
+
+		console.log(req.body);
+		try {
+			// const results = await ImageService.create(req.body, id);
+		} catch (err) {
+			next(err);
+		}
+	}
+
+	static async assignCategory(req: Request, res: Response, next: NextFunction) {
+		const { id } = req.params;
+		const { categoryId } = req.body;
+
+		try {
+			await ProductService.assignCategory(id, categoryId);
+			res.status(StatusCodes.OK).json({
+				message: 'Category succesfully assigned',
+			});
+		} catch (err) {
+			next(err);
+		}
+	}
+
+	static async removeCategory(req: Request, res: Response, next: NextFunction) {
+		const { productId, categoryId } = req.params;
+
+		try {
+			await ProductService.removeCategory(productId, categoryId);
+			res.status(StatusCodes.OK).json({
+				message: 'Category succesfully removed',
+			});
+		} catch (err) {
+			next(err);
 		}
 	}
 }

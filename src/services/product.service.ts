@@ -3,15 +3,20 @@ import { HttpError } from '../util/httpError';
 import StatusCodes from 'http-status-codes';
 import { IProduct } from '../entities/product';
 import slug from 'slug';
+import { Category } from '../entities/category';
 
 enum IGetOneOptions {
 	ID = 'id',
 	SLUG = 'slug',
 }
 
+const relations = ['variants', 'variants.options', 'categories', 'images'];
+
 export class ProductService {
 	static async get() {
-		const products = await Product.find();
+		const products = await Product.find({
+			relations,
+		});
 		return products;
 	}
 
@@ -20,10 +25,15 @@ export class ProductService {
 
 		switch (type) {
 			case IGetOneOptions.ID:
-				product = await Product.findOne(filter);
+				product = await Product.findOne(filter, {
+					relations,
+				});
 				break;
 			case IGetOneOptions.SLUG:
-				product = await Product.findOne({ where: { slug: filter } });
+				product = await Product.findOne({
+					where: { slug: filter },
+					relations,
+				});
 				break;
 			default:
 				throw new HttpError({ status: StatusCodes.BAD_REQUEST });
@@ -36,7 +46,7 @@ export class ProductService {
 		if (!doc.slug) doc.slug = slug(doc.name);
 
 		const product = Product.create(doc);
-		await Product.save(product);
+		await product.save();
 
 		return product;
 	}
@@ -51,7 +61,9 @@ export class ProductService {
 			});
 
 		await Product.update(id, doc);
-		return await Product.findOne(id);
+		return await Product.findOne(id, {
+			relations,
+		});
 	}
 
 	static async delete(id: string) {
@@ -64,5 +76,50 @@ export class ProductService {
 			});
 
 		return await product.remove();
+	}
+
+	static async assignCategory(productId: string, categoryId: string) {
+		const product = await Product.findOne(productId, { relations });
+
+		if (!product)
+			throw new HttpError({
+				status: StatusCodes.NOT_FOUND,
+				error: 'Product not found',
+			});
+
+		const category = await Category.findOne(categoryId);
+
+		if (!category)
+			throw new HttpError({
+				status: StatusCodes.NOT_FOUND,
+				error: 'Category not found',
+			});
+
+		product.categories = [category, ...product.categories];
+		await product.save();
+	}
+
+	static async removeCategory(productId: string, categoryId: string) {
+		const product = await Product.findOne(productId, { relations });
+
+		if (!product)
+			throw new HttpError({
+				status: StatusCodes.NOT_FOUND,
+				error: 'Product not found',
+			});
+
+		const categoryToRemove = await Category.findOne(categoryId);
+
+		if (!categoryToRemove)
+			throw new HttpError({
+				status: StatusCodes.NOT_FOUND,
+				error: 'Category not found',
+			});
+
+		product.categories = product.categories.filter(
+			category => category.id !== categoryToRemove.id
+		);
+
+		await product.save();
 	}
 }

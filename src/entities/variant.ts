@@ -1,4 +1,13 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+	BaseEntity,
+	Column,
+	Entity,
+	ManyToOne,
+	OneToMany,
+	PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Product } from './product';
+import { Option } from './option';
 
 export interface IVariant {
 	name: string;
@@ -11,4 +20,10 @@ export class Variant extends BaseEntity {
 
 	@Column()
 	name!: string;
+
+	@OneToMany(() => Option, option => option.variant)
+	options!: Option[];
+
+	@ManyToOne(() => Product, product => product.variants)
+	product!: Product;
 }

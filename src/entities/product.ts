@@ -3,12 +3,15 @@ import {
 	Column,
 	CreateDateColumn,
 	Entity,
-	ManyToOne,
+	JoinTable,
+	ManyToMany,
+	OneToMany,
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
 } from 'typeorm';
-
+import { Category } from './category';
 import { Variant } from './variant';
+import { Image } from './image';
 
 export interface IProduct {
 	name: string;
@@ -19,7 +22,7 @@ export interface IProduct {
 	price: number;
 }
 
-@Entity({ name: 'products' })
+@Entity()
 export class Product extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	id!: number;
@@ -39,11 +42,18 @@ export class Product extends BaseEntity {
 	@Column({ unique: true, nullable: true })
 	barcode!: string;
 
-	@Column()
+	@Column({ type: 'float' })
 	price!: number;
 
-	@ManyToOne(() => Variant)
+	@OneToMany(() => Image, image => image.product)
+	images!: Image[];
+
+	@OneToMany(() => Variant, variant => variant.product)
 	variants!: Variant[];
+
+	@ManyToMany(() => Category)
+	@JoinTable()
+	categories!: Category[];
 
 	@CreateDateColumn()
 	createdAt!: Date;
