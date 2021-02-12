@@ -5,15 +5,11 @@ import { HttpError } from '../util/httpError';
 
 export class OptionService {
 	static async create(productId: string, variantId: string, doc: IOption) {
-		console.log(variantId, productId);
-
 		// Check if variant exists
 		const variant = await Variant.findOne({
 			where: { id: variantId, product: productId },
 			relations: ['options'],
 		});
-
-		console.log(variant);
 
 		if (!variant)
 			throw new HttpError({
@@ -24,8 +20,6 @@ export class OptionService {
 		// Create option
 		const option = await Option.create(doc);
 		await option.save();
-
-		console.log(option);
 
 		variant.options = [option, ...variant.options];
 		await variant.save();

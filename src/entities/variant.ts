@@ -21,9 +21,11 @@ export class Variant extends BaseEntity {
 	@Column()
 	name!: string;
 
-	@OneToMany(() => Option, option => option.variant)
+	@OneToMany(() => Option, option => option.variant, { onDelete: 'CASCADE' })
 	options!: Option[];
 
-	@ManyToOne(() => Product, product => product.variants)
+	@ManyToOne(() => Product, product => product.variants, {
+		onDelete: 'CASCADE',
+	})
 	product!: Product;
 }

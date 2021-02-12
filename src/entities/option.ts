@@ -19,6 +19,6 @@ export class Option extends BaseEntity {
 	@Column()
 	option!: string;
 
-	@ManyToOne(() => Variant, variant => variant.options)
+	@ManyToOne(() => Variant, variant => variant.options, { onDelete: 'CASCADE' })
 	variant!: Variant;
 }

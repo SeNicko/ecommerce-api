@@ -19,9 +19,7 @@ export class CategoryController {
 
 		try {
 			const category = await CategoryService.getOne(id);
-			res.status(StatusCodes.OK).json({
-				...category,
-			});
+			res.status(StatusCodes.OK).json(category);
 		} catch (err) {
 			next(err);
 		}
@@ -58,6 +56,23 @@ export class CategoryController {
 			await CategoryService.delete(id);
 			res.status(StatusCodes.OK).json({
 				message: 'Category succesfully deleted',
+			});
+		} catch (err) {
+			next(err);
+		}
+	}
+
+	static async retriveProducts(
+		req: Request,
+		res: Response,
+		next: NextFunction
+	) {
+		const { id } = req.params;
+
+		try {
+			const products = await CategoryService.retriveProducts(id);
+			res.status(StatusCodes.OK).json({
+				data: products,
 			});
 		} catch (err) {
 			next(err);

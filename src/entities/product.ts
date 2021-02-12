@@ -45,13 +45,15 @@ export class Product extends BaseEntity {
 	@Column({ type: 'float' })
 	price!: number;
 
-	@OneToMany(() => Image, image => image.product)
+	@OneToMany(() => Image, image => image.product, { onDelete: 'CASCADE' })
 	images!: Image[];
 
-	@OneToMany(() => Variant, variant => variant.product)
+	@OneToMany(() => Variant, variant => variant.product, { onDelete: 'CASCADE' })
 	variants!: Variant[];
 
-	@ManyToMany(() => Category)
+	@ManyToMany(() => Category, category => category.products, {
+		onDelete: 'CASCADE',
+	})
 	@JoinTable()
 	categories!: Category[];
 

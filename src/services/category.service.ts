@@ -53,4 +53,16 @@ export class CategoryService {
 
 		return await category.remove();
 	}
+
+	static async retriveProducts(id: string) {
+		const category = await Category.findOne(id, { relations: ['products'] });
+
+		if (!category)
+			throw new HttpError({
+				status: StatusCodes.NOT_FOUND,
+				error: 'Category not found',
+			});
+
+		return category.products;
+	}
 }

@@ -1,4 +1,11 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+	BaseEntity,
+	Column,
+	Entity,
+	ManyToMany,
+	PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Product } from './product';
 
 export interface ICategory {
 	slug?: string;
@@ -15,4 +22,9 @@ export class Category extends BaseEntity {
 
 	@Column({ unique: true })
 	slug!: string;
+
+	@ManyToMany(() => Product, product => product.categories, {
+		onDelete: 'CASCADE',
+	})
+	products!: Product[];
 }
