@@ -3,6 +3,11 @@ import slug from 'slug';
 import { HttpError } from '../util/httpError';
 import { StatusCodes } from 'http-status-codes';
 
+enum IGetProductsOptions {
+	ID = 'id',
+	SLUG = 'slug',
+}
+
 export class CategoryService {
 	static async get() {
 		const categories = await Category.find();
@@ -54,8 +59,31 @@ export class CategoryService {
 		return await category.remove();
 	}
 
-	static async retriveProducts(id: string) {
-		const category = await Category.findOne(id, { relations: ['products'] });
+	static async retriveProducts(
+		filter: string,
+		type: string = IGetProductsOptions.ID
+	) {
+		let category;
+
+		console.log(filter, type);
+
+		switch (type) {
+			case IGetProductsOptions.ID:
+				category = await Category.findOne(filter, {
+					relations: ['products'],
+				});
+				break;
+			case IGetProductsOptions.SLUG:
+				category = await Category.findOne({
+					where: {
+						slug: filter,
+					},
+					relations: ['products'],
+				});
+				break;
+			default:
+				throw new HttpError({ status: StatusCodes.BAD_REQUEST });
+		}
 
 		if (!category)
 			throw new HttpError({

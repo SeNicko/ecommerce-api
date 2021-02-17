@@ -39,6 +39,12 @@ export class ProductService {
 				throw new HttpError({ status: StatusCodes.BAD_REQUEST });
 		}
 
+		if (!product)
+			throw new HttpError({
+				status: StatusCodes.NOT_FOUND,
+				error: 'Prduct not found',
+			});
+
 		return product;
 	}
 

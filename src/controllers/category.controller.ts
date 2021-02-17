@@ -67,10 +67,14 @@ export class CategoryController {
 		res: Response,
 		next: NextFunction
 	) {
-		const { id } = req.params;
+		const type = req.query.type;
+		const { filter } = req.params;
 
 		try {
-			const products = await CategoryService.retriveProducts(id);
+			const products = await CategoryService.retriveProducts(
+				filter,
+				type as string
+			);
 			res.status(StatusCodes.OK).json({
 				data: products,
 			});

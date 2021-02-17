@@ -5,6 +5,7 @@ import ProductRoute from './routes/product.route';
 import CategoryRoute from './routes/category.route';
 import { errorHandler } from './middlewares/errorHandler';
 import { resolve } from 'path';
+import cors from 'cors';
 
 const bootstrap = async () => {
 	await createConnection();
@@ -13,6 +14,12 @@ const bootstrap = async () => {
 	const port = process.env.PORT || 3000;
 
 	app.use(express.json());
+	app.use(
+		cors({
+			origin: 'http://localhost:3001',
+			optionsSuccessStatus: 200,
+		})
+	);
 	app.use('/static', express.static(resolve(__dirname, '../uploads')));
 	app.use('/products', ProductRoute);
 	app.use('/categories', CategoryRoute);
