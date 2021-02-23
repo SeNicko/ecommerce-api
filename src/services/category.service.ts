@@ -63,22 +63,27 @@ export class CategoryService {
 		filter: string,
 		type: string = IGetProductsOptions.ID
 	) {
+		const relations = [
+			'products',
+			'products.variants',
+			'products.images',
+			'products.variants.options',
+		];
+
 		let category;
 
-		console.log(filter, type);
-
 		switch (type) {
-			case IGetProductsOptions.ID:
-				category = await Category.findOne(filter, {
-					relations: ['products'],
-				});
-				break;
 			case IGetProductsOptions.SLUG:
 				category = await Category.findOne({
 					where: {
 						slug: filter,
 					},
-					relations: ['products'],
+					relations,
+				});
+				break;
+			case IGetProductsOptions.ID:
+				category = await Category.findOne(filter, {
+					relations,
 				});
 				break;
 			default:

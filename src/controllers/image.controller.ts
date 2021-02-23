@@ -7,16 +7,9 @@ export class ImageController {
 		const { id } = req.params;
 
 		try {
-			const image = await ImageService.create(
-				{
-					alt: req.body.alt ?? '',
-					url: `http://localhost:3000/static/${req.file.filename}`,
-				},
-				id
-			);
-
+			await ImageService.create(req.files as Express.Multer.File[], id);
 			res.status(StatusCodes.CREATED).json({
-				...image,
+				message: 'Images succesfully created',
 			});
 		} catch (err) {
 			next(err);

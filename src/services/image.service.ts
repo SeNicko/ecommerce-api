@@ -1,10 +1,10 @@
 import { StatusCodes } from 'http-status-codes';
-import { Image, IImage } from '../entities/image';
+import { Image } from '../entities/image';
 import { Product } from '../entities/product';
 import { HttpError } from '../util/httpError';
 
 export class ImageService {
-	static async create(doc: IImage, productId: string) {
+	static async create(images: Express.Multer.File[], productId: string) {
 		const product = await Product.findOne(productId, { relations: ['images'] });
 
 		if (!product)
@@ -13,13 +13,18 @@ export class ImageService {
 				error: 'Product not found',
 			});
 
-		const image = await Image.create(doc);
-		await image.save();
+		images.forEach(async imageFile => {
+			const image = await Image.create({
+				url: `http://localhost:3000/static/${imageFile.filename}`,
+			});
 
-		product.images = [image, ...product.images];
-		await product.save();
+			image.product = product;
+			await image.save();
 
-		return image;
+			product.images = [image, ...product.images];
+		});
+
+		return await product.save();
 	}
 
 	static async delete(imageId: string, productId: string) {

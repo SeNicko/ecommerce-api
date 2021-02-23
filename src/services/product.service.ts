@@ -4,6 +4,7 @@ import StatusCodes from 'http-status-codes';
 import { IProduct } from '../entities/product';
 import slug from 'slug';
 import { Category } from '../entities/category';
+import { createHash } from '../util/hash';
 
 enum IGetOneOptions {
 	ID = 'id',
@@ -16,6 +17,9 @@ export class ProductService {
 	static async get() {
 		const products = await Product.find({
 			relations,
+			order: {
+				createdAt: 'DESC',
+			},
 		});
 		return products;
 	}
@@ -49,7 +53,7 @@ export class ProductService {
 	}
 
 	static async create(doc: IProduct) {
-		if (!doc.slug) doc.slug = slug(doc.name);
+		if (!doc.slug) doc.slug = `${slug(doc.name)}-${createHash()}`;
 
 		const product = Product.create(doc);
 		await product.save();
