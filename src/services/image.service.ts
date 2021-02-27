@@ -9,6 +9,7 @@ export class ImageService {
 		data: IImageCreate,
 		productId: string
 	) {
+		// Check if product exists
 		const product = await Product.findOne(productId, { relations: ['images'] });
 
 		if (!product)
@@ -17,21 +18,25 @@ export class ImageService {
 				error: 'Product not found',
 			});
 
+		// Create image
 		const image = await Image.create({
 			url: `http://localhost:3000/static/${imageFile.filename}`,
 		});
 
-		// Assign alt if provided
+		// Assign alt to image
 		if (data.alt) image.alt = data.alt;
 
+		// Assign produt to image
 		image.product = product;
 		await image.save();
 
+		// Add image to product
 		product.images = [image, ...product.images];
 		return await product.save();
 	}
 
 	static async delete(imageId: string, productId: string) {
+		// Check if product exists
 		const product = await Product.findOne(productId);
 
 		if (!product)
@@ -40,6 +45,7 @@ export class ImageService {
 				error: 'Product not found',
 			});
 
+		// Check if image exists
 		const image = await Image.findOne(imageId);
 
 		if (!image)
@@ -48,6 +54,7 @@ export class ImageService {
 				error: 'Image not found',
 			});
 
+		// Delete image
 		await image.remove();
 	}
 }
