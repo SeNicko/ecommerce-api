@@ -7,6 +7,10 @@ import {
 } from 'typeorm';
 import { Product } from './product';
 
+export interface IImageCreate {
+	alt?: string;
+}
+
 export interface IImage {
 	url: string;
 	alt?: string;

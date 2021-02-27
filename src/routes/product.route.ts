@@ -22,7 +22,7 @@ router.delete(
 );
 
 // Images
-router.post('/:id/images', upload.array('images'), ImageController.create);
+router.post('/:id/images', upload.single('image'), ImageController.create);
 router.delete('/:productId/images/:imageId', ImageController.delete);
 
 // Product variants
