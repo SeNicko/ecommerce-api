@@ -9,12 +9,12 @@ enum IGetProductsOptions {
 }
 
 export class CategoryService {
-	static async get() {
+	async get() {
 		const categories = await Category.find();
 		return categories;
 	}
 
-	static async getOne(id: string) {
+	async getOne(id: string) {
 		const category = await Category.findOne(id);
 
 		if (!category)
@@ -26,7 +26,7 @@ export class CategoryService {
 		return category;
 	}
 
-	static async create(doc: ICategory) {
+	async create(doc: ICategory) {
 		if (!doc.slug) doc.slug = slug(doc.name);
 
 		const category = Category.create(doc);
@@ -35,7 +35,7 @@ export class CategoryService {
 		return category;
 	}
 
-	static async update(id: string, doc: ICategory) {
+	async update(id: string, doc: ICategory) {
 		const category = await Category.findOne(id);
 
 		if (!category)
@@ -47,7 +47,7 @@ export class CategoryService {
 		return await Category.update(id, doc);
 	}
 
-	static async delete(id: string) {
+	async delete(id: string) {
 		const category = await Category.findOne(id);
 
 		if (!category)
@@ -59,10 +59,7 @@ export class CategoryService {
 		return await category.remove();
 	}
 
-	static async retriveProducts(
-		filter: string,
-		type: string = IGetProductsOptions.ID
-	) {
+	async retriveProducts(filter: string, type: string = IGetProductsOptions.ID) {
 		const relations = [
 			'products',
 			'products.variants',
@@ -99,3 +96,5 @@ export class CategoryService {
 		return category.products;
 	}
 }
+
+export default new CategoryService();

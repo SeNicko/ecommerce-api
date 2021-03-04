@@ -1,6 +1,6 @@
 import { Response, Request, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { CategoryService } from '../services/category.service';
+import CategoryService from '../services/category.service';
 
 export class CategoryController {
 	static async get(_req: Request, res: Response, next: NextFunction) {

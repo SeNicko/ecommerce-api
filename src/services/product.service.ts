@@ -13,8 +13,8 @@ enum IGetOneOptions {
 
 const relations = ['variants', 'variants.options', 'categories', 'images'];
 
-export class ProductService {
-	static async get() {
+class ProductService {
+	async get() {
 		const products = await Product.find({
 			relations,
 			order: {
@@ -24,7 +24,7 @@ export class ProductService {
 		return products;
 	}
 
-	static async getOne(filter: string, type: string = IGetOneOptions.ID) {
+	async getOne(filter: string, type: string = IGetOneOptions.ID) {
 		let product;
 
 		switch (type) {
@@ -52,7 +52,7 @@ export class ProductService {
 		return product;
 	}
 
-	static async create(doc: IProduct) {
+	async create(doc: IProduct) {
 		if (!doc.slug) doc.slug = `${slug(doc.name)}-${createHash()}`;
 
 		const product = Product.create(doc);
@@ -61,7 +61,7 @@ export class ProductService {
 		return product;
 	}
 
-	static async update(id: string, doc: IProduct) {
+	async update(id: string, doc: IProduct) {
 		const product = await Product.findOne(id);
 
 		if (!product)
@@ -76,7 +76,7 @@ export class ProductService {
 		});
 	}
 
-	static async delete(id: string) {
+	async delete(id: string) {
 		const product = await Product.findOne(id);
 
 		if (!product)
@@ -88,7 +88,7 @@ export class ProductService {
 		return await product.remove();
 	}
 
-	static async assignCategory(productId: string, categoryId: string) {
+	async assignCategory(productId: string, categoryId: string) {
 		const product = await Product.findOne(productId, { relations });
 
 		if (!product)
@@ -109,7 +109,7 @@ export class ProductService {
 		await product.save();
 	}
 
-	static async removeCategory(productId: string, categoryId: string) {
+	async removeCategory(productId: string, categoryId: string) {
 		const product = await Product.findOne(productId, { relations });
 
 		if (!product)
@@ -133,3 +133,5 @@ export class ProductService {
 		await product.save();
 	}
 }
+
+export default new ProductService();

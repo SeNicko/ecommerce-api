@@ -1,6 +1,7 @@
 import {
 	BaseEntity,
 	Column,
+	CreateDateColumn,
 	Entity,
 	ManyToOne,
 	OneToMany,
@@ -28,4 +29,7 @@ export class Variant extends BaseEntity {
 		onDelete: 'CASCADE',
 	})
 	product!: Product;
+
+	@CreateDateColumn()
+	createdAt!: Date;
 }

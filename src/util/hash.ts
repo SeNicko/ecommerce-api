@@ -1,3 +1,5 @@
+// Generates random 5 letter hash
+// Used for generating unique names
 export const createHash = () => {
 	const chars = 'abcdefghjiklmnoprqstABCDEFGHIJKLMND';
 

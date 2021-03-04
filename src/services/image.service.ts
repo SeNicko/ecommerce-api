@@ -3,8 +3,8 @@ import { Image, IImageCreate } from '../entities/image';
 import { Product } from '../entities/product';
 import { HttpError } from '../util/httpError';
 
-export class ImageService {
-	static async create(
+class ImageService {
+	async create(
 		imageFile: Express.Multer.File,
 		data: IImageCreate,
 		productId: string
@@ -35,7 +35,7 @@ export class ImageService {
 		return await product.save();
 	}
 
-	static async delete(imageId: string, productId: string) {
+	async delete(imageId: string, productId: string) {
 		// Check if product exists
 		const product = await Product.findOne(productId);
 
@@ -58,3 +58,5 @@ export class ImageService {
 		await image.remove();
 	}
 }
+
+export default new ImageService();

@@ -1,6 +1,6 @@
 import { Response, Request, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { ImageService } from '../services/image.service';
+import ImageService from '../services/image.service';
 
 export class ImageController {
 	static async create(req: Request, res: Response, next: NextFunction) {

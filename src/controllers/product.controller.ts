@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import StatusCodes from 'http-status-codes';
 import { HttpError } from '../util/httpError';
-import { ProductService } from '../services/product.service';
+import ProductService from '../services/product.service';
 
 export class ProductController {
 	static async get(_req: Request, res: Response, next: NextFunction) {

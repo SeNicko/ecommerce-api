@@ -4,6 +4,7 @@ import {
 	PrimaryGeneratedColumn,
 	Column,
 	ManyToOne,
+	CreateDateColumn,
 } from 'typeorm';
 import { Product } from './product';
 
@@ -29,4 +30,7 @@ export class Image extends BaseEntity {
 
 	@ManyToOne(() => Product, product => product.images, { onDelete: 'CASCADE' })
 	product!: Product;
+
+	@CreateDateColumn()
+	createdAt!: Date;
 }

@@ -1,6 +1,6 @@
 import { Response, Request, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { VariantService } from '../services/variant.service';
+import VariantService from '../services/variant.service';
 
 export class VariantController {
 	// Create variant

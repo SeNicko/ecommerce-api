@@ -1,6 +1,6 @@
 import { Response, Request, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { OptionService } from '../services/option.service';
+import OptionService from '../services/option.service';
 
 export class OptionController {
 	static async create(req: Request, res: Response, next: NextFunction) {

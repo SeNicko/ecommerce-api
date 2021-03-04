@@ -3,8 +3,8 @@ import { Product } from '../entities/product';
 import { Variant, IVariant } from '../entities/variant';
 import { HttpError } from '../util/httpError';
 
-export class VariantService {
-	static async create(productId: string, doc: IVariant) {
+class VariantService {
+	async create(productId: string, doc: IVariant) {
 		const product = await Product.findOne(productId, {
 			relations: ['variants'],
 		});
@@ -24,7 +24,7 @@ export class VariantService {
 		return variant;
 	}
 
-	static async delete(productId: string, variantId: string) {
+	async delete(productId: string, variantId: string) {
 		const variant = await Variant.findOne({
 			where: { product: productId, id: variantId },
 		});
@@ -38,3 +38,5 @@ export class VariantService {
 		return await variant.remove();
 	}
 }
+
+export default new VariantService();

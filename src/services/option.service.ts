@@ -3,8 +3,8 @@ import { IOption, Option } from '../entities/option';
 import { Variant } from '../entities/variant';
 import { HttpError } from '../util/httpError';
 
-export class OptionService {
-	static async create(productId: string, variantId: string, doc: IOption) {
+class OptionService {
+	async create(productId: string, variantId: string, doc: IOption) {
 		// Check if variant exists
 		const variant = await Variant.findOne({
 			where: { id: variantId, product: productId },
@@ -27,7 +27,7 @@ export class OptionService {
 		return option;
 	}
 
-	static async delete(productId: string, variantId: string, optionId: string) {
+	async delete(productId: string, variantId: string, optionId: string) {
 		const option = await Option.findOne({
 			relations: ['variant'],
 			where: { variant: { id: variantId, product: productId }, id: optionId },
@@ -42,3 +42,5 @@ export class OptionService {
 		await option.remove();
 	}
 }
+
+export default new OptionService();
