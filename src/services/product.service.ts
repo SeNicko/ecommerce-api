@@ -17,9 +17,6 @@ class ProductService {
 	async get() {
 		const products = await Product.find({
 			relations,
-			order: {
-				createdAt: 'DESC',
-			},
 		});
 		return products;
 	}

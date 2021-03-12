@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import OptionService from '../services/option.service';
 
 export class OptionController {
-	static async create(req: Request, res: Response, next: NextFunction) {
+	async create(req: Request, res: Response, next: NextFunction) {
 		const { productId, variantId } = req.params;
 
 		try {
@@ -17,7 +17,7 @@ export class OptionController {
 		}
 	}
 
-	static async delete(req: Request, res: Response, next: NextFunction) {
+	async delete(req: Request, res: Response, next: NextFunction) {
 		const { productId, variantId, optionId } = req.params;
 
 		try {

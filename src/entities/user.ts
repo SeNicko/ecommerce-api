@@ -3,9 +3,12 @@ import {
 	Column,
 	CreateDateColumn,
 	Entity,
+	JoinColumn,
+	OneToOne,
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
 } from 'typeorm';
+import { Cart } from './cart';
 
 export interface IUserRegister {
 	email: string;
@@ -29,4 +32,8 @@ export class User extends BaseEntity {
 
 	@UpdateDateColumn()
 	updatedAt!: Date;
+
+	@OneToOne(() => Cart, { onDelete: 'SET NULL' })
+	@JoinColumn()
+	cart!: Cart;
 }

@@ -4,7 +4,7 @@ import { HttpError } from '../util/httpError';
 import ProductService from '../services/product.service';
 
 export class ProductController {
-	static async get(_req: Request, res: Response, next: NextFunction) {
+	async get(_req: Request, res: Response, next: NextFunction) {
 		try {
 			// Get all products
 			const products = await ProductService.get();
@@ -16,7 +16,7 @@ export class ProductController {
 		}
 	}
 
-	static async getOne(req: Request, res: Response, next: NextFunction) {
+	async getOne(req: Request, res: Response, next: NextFunction) {
 		const type = req.query.type;
 		const { filter } = req.params;
 
@@ -36,7 +36,7 @@ export class ProductController {
 		}
 	}
 
-	static async create(req: Request, res: Response, next: NextFunction) {
+	async create(req: Request, res: Response, next: NextFunction) {
 		try {
 			const product = await ProductService.create(req.body);
 			res.status(StatusCodes.CREATED).json({
@@ -47,7 +47,7 @@ export class ProductController {
 		}
 	}
 
-	static async update(req: Request, res: Response, next: NextFunction) {
+	async update(req: Request, res: Response, next: NextFunction) {
 		const { id } = req.params;
 
 		try {
@@ -60,7 +60,7 @@ export class ProductController {
 		}
 	}
 
-	static async delete(req: Request, res: Response, next: NextFunction) {
+	async delete(req: Request, res: Response, next: NextFunction) {
 		const { id } = req.params;
 
 		try {
@@ -73,18 +73,7 @@ export class ProductController {
 		}
 	}
 
-	static async addImage(req: Request, _res: Response, next: NextFunction) {
-		// const { id } = req.params;
-
-		console.log(req.body);
-		try {
-			// const results = await ImageService.create(req.body, id);
-		} catch (err) {
-			next(err);
-		}
-	}
-
-	static async assignCategory(req: Request, res: Response, next: NextFunction) {
+	async assignCategory(req: Request, res: Response, next: NextFunction) {
 		const { id } = req.params;
 		const { categoryId } = req.body;
 
@@ -98,7 +87,7 @@ export class ProductController {
 		}
 	}
 
-	static async removeCategory(req: Request, res: Response, next: NextFunction) {
+	async removeCategory(req: Request, res: Response, next: NextFunction) {
 		const { productId, categoryId } = req.params;
 
 		try {

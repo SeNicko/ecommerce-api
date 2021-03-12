@@ -6,34 +6,36 @@ import { VariantController } from '../controllers/variant.controller';
 import { upload } from '../util/fileUpload';
 
 const router = Router();
+const productController = new ProductController();
 
-// Product
-router.get('/', ProductController.get);
-router.get('/:filter', ProductController.getOne);
-router.post('/', ProductController.create);
-router.put('/:id', ProductController.update);
-router.delete('/:id', ProductController.delete);
+// Crud controllers
+router.get('/', productController.get);
+router.get('/:filter', productController.getOne);
+router.post('/', productController.create);
+router.put('/:id', productController.update);
+router.delete('/:id', productController.delete);
 
-// Categories
-router.put('/:id/categories', ProductController.assignCategory);
+// Properties controllers
+const imageController = new ImageController();
+const variantController = new VariantController();
+const optionController = new OptionController();
+
+router.post('/:id/categories', productController.assignCategory);
 router.delete(
 	'/:productId/categories/:categoryId',
-	ProductController.removeCategory
+	productController.removeCategory
 );
 
-// Images
-router.post('/:id/images', upload.single('image'), ImageController.create);
-router.delete('/:productId/images/:imageId', ImageController.delete);
+router.post('/:id/images', upload.single('image'), imageController.create);
+router.delete('/:productId/images/:imageId', imageController.delete);
 
-// Product variants
-router.post('/:productId/variants', VariantController.create);
-router.delete('/:productId/variants/:variantId', VariantController.remove);
+router.post('/:productId/variants', variantController.create);
+router.delete('/:productId/variants/:variantId', variantController.remove);
 
-// Product variants options
-router.post('/:productId/variants/:variantId/options', OptionController.create);
+router.post('/:productId/variants/:variantId/options', optionController.create);
 router.delete(
 	'/:productId/variants/:variantId/options/:optionId',
-	OptionController.delete
+	optionController.delete
 );
 
 export default router;

@@ -4,7 +4,7 @@ import VariantService from '../services/variant.service';
 
 export class VariantController {
 	// Create variant
-	static async create(req: Request, res: Response, next: NextFunction) {
+	async create(req: Request, res: Response, next: NextFunction) {
 		const { productId } = req.params;
 
 		try {
@@ -18,7 +18,7 @@ export class VariantController {
 	}
 
 	// Delete variant
-	static async remove(req: Request, res: Response, next: NextFunction) {
+	async remove(req: Request, res: Response, next: NextFunction) {
 		const { productId, variantId } = req.params;
 
 		try {

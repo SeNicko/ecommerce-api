@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import ImageService from '../services/image.service';
 
 export class ImageController {
-	static async create(req: Request, res: Response, next: NextFunction) {
+	async create(req: Request, res: Response, next: NextFunction) {
 		const { id } = req.params;
 
 		try {
@@ -16,7 +16,7 @@ export class ImageController {
 		}
 	}
 
-	static async delete(req: Request, res: Response, next: NextFunction) {
+	async delete(req: Request, res: Response, next: NextFunction) {
 		const { productId, imageId } = req.params;
 
 		try {

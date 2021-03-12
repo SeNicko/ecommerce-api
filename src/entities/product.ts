@@ -5,6 +5,7 @@ import {
 	Entity,
 	JoinTable,
 	ManyToMany,
+	ManyToOne,
 	OneToMany,
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
@@ -12,6 +13,7 @@ import {
 import { Category } from './category';
 import { Variant } from './variant';
 import { Image } from './image';
+import { CartItem } from './cartItem';
 
 export interface IProduct {
 	name: string;
@@ -44,6 +46,9 @@ export class Product extends BaseEntity {
 
 	@Column({ type: 'float' })
 	price!: number;
+
+	@ManyToOne(() => CartItem, cartItem => cartItem.product)
+	cartItems!: CartItem[];
 
 	@OneToMany(() => Image, image => image.product, { onDelete: 'CASCADE' })
 	images!: Image[];

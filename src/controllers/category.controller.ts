@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import CategoryService from '../services/category.service';
 
 export class CategoryController {
-	static async get(_req: Request, res: Response, next: NextFunction) {
+	async get(_req: Request, res: Response, next: NextFunction) {
 		try {
 			const categories = await CategoryService.get();
 			res.status(StatusCodes.OK).json({
@@ -14,7 +14,7 @@ export class CategoryController {
 		}
 	}
 
-	static async getOne(req: Request, res: Response, next: NextFunction) {
+	async getOne(req: Request, res: Response, next: NextFunction) {
 		const { id } = req.params;
 
 		try {
@@ -25,7 +25,7 @@ export class CategoryController {
 		}
 	}
 
-	static async create(req: Request, res: Response, next: NextFunction) {
+	async create(req: Request, res: Response, next: NextFunction) {
 		try {
 			const category = await CategoryService.create(req.body);
 			res.status(StatusCodes.CREATED).json({
@@ -36,7 +36,7 @@ export class CategoryController {
 		}
 	}
 
-	static async update(req: Request, res: Response, next: NextFunction) {
+	async update(req: Request, res: Response, next: NextFunction) {
 		const { id } = req.params;
 
 		try {
@@ -49,7 +49,7 @@ export class CategoryController {
 		}
 	}
 
-	static async delete(req: Request, res: Response, next: NextFunction) {
+	async delete(req: Request, res: Response, next: NextFunction) {
 		const { id } = req.params;
 
 		try {
@@ -62,11 +62,7 @@ export class CategoryController {
 		}
 	}
 
-	static async retriveProducts(
-		req: Request,
-		res: Response,
-		next: NextFunction
-	) {
+	async retriveProducts(req: Request, res: Response, next: NextFunction) {
 		const type = req.query.type;
 		const { filter } = req.params;
 
